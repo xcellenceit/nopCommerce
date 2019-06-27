@@ -35,6 +35,18 @@ set @resources='
   <LocaleResource Name="Admin.Orders.Fields.Tax.Hint">
     <Value>Total tax applied to this order. Manage your tax settings from Configuration &gt; Tax.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.CaptchaShowOnForumNewTopicPage">
+    <Value>Show on forum New Topic page</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.CaptchaShowOnForumNewTopicPage.Hint">
+    <Value>Check to show CAPTCHA when posting new topic.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.CaptchaShowOnForumNewPostPage">
+    <Value>Show on forum New Post page</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.CaptchaShowOnForumNewPostPage.Hint">
+    <Value>Check to show CAPTCHA when posting new reply.</Value>
+  </LocaleResource>
 </Language>
 '
 
