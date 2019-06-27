@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Forums;
+using Nop.Core.Domain.Security;
 using Nop.Core.Rss;
 using Nop.Services.Forums;
 using Nop.Services.Localization;
@@ -22,6 +23,7 @@ namespace Nop.Web.Controllers
     {
         #region Fields
 
+        private readonly CaptchaSettings _captchaSettings;
         private readonly ForumSettings _forumSettings;
         private readonly IForumModelFactory _forumModelFactory;
         private readonly IForumService _forumService;
@@ -34,7 +36,8 @@ namespace Nop.Web.Controllers
 
         #region Ctor
 
-        public BoardsController(ForumSettings forumSettings,
+        public BoardsController(CaptchaSettings captchaSettings,
+            ForumSettings forumSettings,
             IForumModelFactory forumModelFactory,
             IForumService forumService,
             ILocalizationService localizationService,
@@ -42,6 +45,7 @@ namespace Nop.Web.Controllers
             IWebHelper webHelper,
             IWorkContext workContext)
         {
+            _captchaSettings = captchaSettings;
             _forumSettings = forumSettings;
             _forumModelFactory = forumModelFactory;
             _forumService = forumService;
@@ -373,7 +377,8 @@ namespace Nop.Web.Controllers
 
         [HttpPost]
         [PublicAntiForgery]
-        public virtual IActionResult TopicCreate(EditForumTopicModel model)
+        [ValidateCaptcha]
+        public virtual IActionResult TopicCreate(EditForumTopicModel model, bool captchaValid)
         {
             if (!_forumSettings.ForumsEnabled)
                 return RedirectToRoute("Homepage");
@@ -381,6 +386,12 @@ namespace Nop.Web.Controllers
             var forum = _forumService.GetForumById(model.ForumId);
             if (forum == null)
                 return RedirectToRoute("Boards");
+
+            //validate CAPTCHA
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnForumNewTopicPage && !captchaValid)
+            {
+                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptchaMessage"));
+            }
 
             if (ModelState.IsValid)
             {
@@ -663,7 +674,8 @@ namespace Nop.Web.Controllers
 
         [HttpPost]
         [PublicAntiForgery]
-        public virtual IActionResult PostCreate(EditForumPostModel model)
+        [ValidateCaptcha]
+        public virtual IActionResult PostCreate(EditForumPostModel model, bool captchaValid)
         {
             if (!_forumSettings.ForumsEnabled)
                 return RedirectToRoute("Homepage");
@@ -671,6 +683,12 @@ namespace Nop.Web.Controllers
             var forumTopic = _forumService.GetTopicById(model.ForumTopicId);
             if (forumTopic == null)
                 return RedirectToRoute("Boards");
+
+            //validate CAPTCHA
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnForumNewPostPage && !captchaValid)
+            {
+                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptchaMessage"));
+            }
 
             if (ModelState.IsValid)
             {
@@ -745,7 +763,8 @@ namespace Nop.Web.Controllers
             }
 
             //redisplay form
-            _forumModelFactory.PreparePostCreateModel(forumTopic, 0, true);
+            model = _forumModelFactory.PreparePostCreateModel(forumTopic, 0, true);
+
             return View(model);
         }
 
@@ -885,7 +904,7 @@ namespace Nop.Web.Controllers
                 if (value.Equals("on") && key.StartsWith("fs", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var id = key.Replace("fs", "").Trim();
-                    if (int.TryParse(id, out int forumSubscriptionId))
+                    if (int.TryParse(id, out var forumSubscriptionId))
                     {
                         var forumSubscription = _forumService.GetSubscriptionById(forumSubscriptionId);
                         if (forumSubscription != null && forumSubscription.CustomerId == _workContext.CurrentCustomer.Id)

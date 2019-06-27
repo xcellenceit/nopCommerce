@@ -113,6 +113,26 @@
                 <span asp-validation-for="CaptchaSettings.ShowOnApplyVendorPage"></span>
             </div>
         </div>
+        <div class="form-group" id="ssCaptchaShowOnForumNewTopicPagepnl">
+            <div class="col-md-3">
+                <nop-override-store-checkbox asp-for="CaptchaSettings.ShowOnForumNewTopicPage_OverrideForStore" asp-input="CaptchaSettings.ShowOnForumNewTopicPage" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                <nop-label asp-for="CaptchaSettings.ShowOnForumNewTopicPage" />
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="CaptchaSettings.ShowOnForumNewTopicPage" />
+                <span asp-validation-for="CaptchaSettings.ShowOnForumNewTopicPage"></span>
+            </div>
+        </div>
+        <div class="form-group" id="ssCaptchaShowOnForumNewPostPagepnl">
+            <div class="col-md-3">
+                <nop-override-store-checkbox asp-for="CaptchaSettings.ShowOnForumNewPostPage_OverrideForStore" asp-input="CaptchaSettings.ShowOnForumNewPostPage" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                <nop-label asp-for="CaptchaSettings.ShowOnForumNewPostPage" />
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="CaptchaSettings.ShowOnForumNewPostPage" />
+                <span asp-validation-for="CaptchaSettings.ShowOnForumNewPostPage"></span>
+            </div>
+        </div>
         <div class="form-group" id="ssReCaptchaPublicKeypnl">
             <div class="col-md-3">
                 <nop-override-store-checkbox asp-for="CaptchaSettings.ReCaptchaPublicKey_OverrideForStore" asp-input="CaptchaSettings.ReCaptchaPublicKey" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
@@ -153,6 +173,8 @@
             $('#ssCaptchaShowOnNewsCommentPagepnl').show();
             $('#ssCaptchaShowOnProductReviewPagepnl').show();
             $('#ssCaptchaShowOnApplyVendorPagepnl').show();
+            $('#ssCaptchaShowOnForumNewTopicPagepnl').show();
+            $('#ssCaptchaShowOnForumNewPostPagepnl').show();
             $('#ssReCaptchaPublicKeypnl').show();
             $('#ssReCaptchaPrivateKeypnl').show();
         } else {
@@ -166,6 +188,8 @@
             $('#ssCaptchaShowOnNewsCommentPagepnl').hide();
             $('#ssCaptchaShowOnProductReviewPagepnl').hide();
             $('#ssCaptchaShowOnApplyVendorPagepnl').hide();
+            $('#ssCaptchaShowOnForumNewTopicPagepnl').hide();
+            $('#ssCaptchaShowOnForumNewPostPagepnl').hide();
             $('#ssReCaptchaPublicKeypnl').hide();
             $('#ssReCaptchaPrivateKeypnl').hide();
         }
