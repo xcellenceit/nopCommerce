@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Text;
 using Nop.Core.Domain.Media;
@@ -22,16 +20,17 @@ namespace Nop.Services.Messages
 
         private readonly IDownloadService _downloadService;
         private readonly INopFileProvider _fileProvider;
+        private readonly ISmtpBuilder _smtpBuilder;
 
         #endregion
 
         #region Ctor
 
-        public EmailSender(IDownloadService downloadService,
-            INopFileProvider fileProvider)
+        public EmailSender(IDownloadService downloadService, INopFileProvider fileProvider, ISmtpBuilder smtpBuilder)
         {
             _downloadService = downloadService;
             _fileProvider = fileProvider;
+            _smtpBuilder = smtpBuilder;
         }
 
         #endregion
@@ -126,7 +125,7 @@ namespace Nop.Services.Messages
         /// <param name="headers">Headers</param>
         public virtual void SendEmail(EmailAccount emailAccount, string subject, string body,
             string fromAddress, string fromName, string toAddress, string toName,
-             string replyTo = null, string replyToName = null,
+            string replyTo = null, string replyToName = null,
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null,
             int attachedDownloadId = 0, IDictionary<string, string> headers = null)
@@ -194,14 +193,8 @@ namespace Nop.Services.Messages
             message.Body = multipart;
 
             //send email
-            using (var smtpClient = new SmtpClient())
+            using (var smtpClient = _smtpBuilder.Build(emailAccount))
             {
-                smtpClient.Connect(emailAccount.Host, emailAccount.Port, emailAccount.EnableSsl);
-
-                smtpClient.Authenticate(emailAccount.UseDefaultCredentials ?
-                    CredentialCache.DefaultNetworkCredentials :
-                    new NetworkCredential(emailAccount.Username, emailAccount.Password));
-
                 smtpClient.Send(message);
                 smtpClient.Disconnect(true);
             }
