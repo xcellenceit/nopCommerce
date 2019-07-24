@@ -14,7 +14,6 @@ namespace Nop.Plugin.Misc.SendinBlue.Services
     {
         #region Fields
 
-        private readonly ISmtpBuilder _smtpBuilder;
         private readonly IStoreContext _storeContext;
         private readonly SendinBlueSettings _sendinBlueSettings;
 

@@ -41,7 +41,7 @@ namespace Nop.Services.Messages
         /// Create an file attachment for the specific download object from DB
         /// </summary>
         /// <param name="download">Attachment download (another attachment)</param>
-        /// <returns></returns>
+        /// <returns>A leaf-node MIME part that contains an attachment.</returns>
         protected MimePart CreateMimeAttachment(Download download)
         {
             if (download is null)
@@ -57,7 +57,7 @@ namespace Nop.Services.Messages
         /// </summary>
         /// <param name="filePath">Attachment file path</param>
         /// <param name="attachmentFileName">Attachment file name</param>
-        /// <returns></returns>
+        /// <returns>A leaf-node MIME part that contains an attachment.</returns>
         protected MimePart CreateMimeAttachment(string filePath, string attachmentFileName = null)
         {
             if (string.IsNullOrWhiteSpace(filePath))
@@ -82,7 +82,7 @@ namespace Nop.Services.Messages
         /// <param name="cDate">Creation date and time for the specified file or directory</param>
         /// <param name="mDate">Date and time that the specified file or directory was last written to</param>
         /// <param name="rDate">Date and time that the specified file or directory was last access to.</param>
-        /// <returns></returns>
+        /// <returns>A leaf-node MIME part that contains an attachment.</returns>
         protected MimePart CreateMimeAttachment(string attachmentFileName, byte[] binaryContent, DateTime cDate, DateTime mDate, DateTime rDate)
         {
             if (!ContentType.TryParse(MimeTypes.GetMimeType(attachmentFileName), out var mimeContentType))
