@@ -388,7 +388,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("Boards");
 
             //validate CAPTCHA
-            if (_captchaSettings.Enabled && _captchaSettings.ShowOnForumNewTopicPage && !captchaValid)
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnForum && !captchaValid)
             {
                 ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptchaMessage"));
             }
@@ -502,7 +502,8 @@ namespace Nop.Web.Controllers
 
         [HttpPost]
         [PublicAntiForgery]
-        public virtual IActionResult TopicEdit(EditForumTopicModel model)
+        [ValidateCaptcha]
+        public virtual IActionResult TopicEdit(EditForumTopicModel model, bool captchaValid)
         {
             if (!_forumSettings.ForumsEnabled)
                 return RedirectToRoute("Homepage");
@@ -514,6 +515,12 @@ namespace Nop.Web.Controllers
             var forum = forumTopic.Forum;
             if (forum == null)
                 return RedirectToRoute("Boards");
+
+            //validate CAPTCHA
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnForum && !captchaValid)
+            {
+                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptchaMessage"));
+            }
 
             if (ModelState.IsValid)
             {
@@ -610,6 +617,7 @@ namespace Nop.Web.Controllers
 
             //redisplay form
             _forumModelFactory.PrepareTopicEditModel(forumTopic, model, true);
+
             return View(model);
         }
 
@@ -685,7 +693,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("Boards");
 
             //validate CAPTCHA
-            if (_captchaSettings.Enabled && _captchaSettings.ShowOnForumNewPostPage && !captchaValid)
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnForum && !captchaValid)
             {
                 ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptchaMessage"));
             }
@@ -786,7 +794,8 @@ namespace Nop.Web.Controllers
 
         [HttpPost]
         [PublicAntiForgery]
-        public virtual IActionResult PostEdit(EditForumPostModel model)
+        [ValidateCaptcha]
+        public virtual IActionResult PostEdit(EditForumPostModel model, bool captchaValid)
         {
             if (!_forumSettings.ForumsEnabled)
                 return RedirectToRoute("Homepage");
@@ -805,6 +814,12 @@ namespace Nop.Web.Controllers
             var forum = forumTopic.Forum;
             if (forum == null)
                 return RedirectToRoute("Boards");
+
+            //validate CAPTCHA
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnForum && !captchaValid)
+            {
+                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptchaMessage"));
+            }
 
             if (ModelState.IsValid)
             {
@@ -871,7 +886,8 @@ namespace Nop.Web.Controllers
             }
 
             //redisplay form
-            _forumModelFactory.PreparePostEditModel(forumPost, true);
+            model = _forumModelFactory.PreparePostEditModel(forumPost, true);
+
             return View(model);
         }
 

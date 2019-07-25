@@ -489,7 +489,7 @@ namespace Nop.Web.Factories
             model.IsCustomerAllowedToSetTopicPriority = _forumService.IsCustomerAllowedToSetTopicPriority(_workContext.CurrentCustomer);
             model.TopicPriorities = ForumTopicTypesList();
             model.IsCustomerAllowedToSubscribe = _forumService.IsCustomerAllowedToSubscribe(_workContext.CurrentCustomer);
-            model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnForumNewTopicPage;
+            model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnForum;
         }
 
         /// <summary>
@@ -517,7 +517,7 @@ namespace Nop.Web.Factories
             model.ForumSeName = _forumService.GetForumSeName(forum);
             model.ForumId = forum.Id;
             model.ForumEditor = _forumSettings.ForumEditor;
-
+            model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnForum;
             model.IsCustomerAllowedToSetTopicPriority = _forumService.IsCustomerAllowedToSetTopicPriority(_workContext.CurrentCustomer);
             model.IsCustomerAllowedToSubscribe = _forumService.IsCustomerAllowedToSubscribe(_workContext.CurrentCustomer);
 
@@ -561,7 +561,7 @@ namespace Nop.Web.Factories
                 ForumTopicSubject = forumTopic.Subject,
                 ForumTopicSeName = _forumService.GetTopicSeName(forumTopic),
                 IsCustomerAllowedToSubscribe = _forumService.IsCustomerAllowedToSubscribe(_workContext.CurrentCustomer),
-                DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnForumNewPostPage
+                DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnForum
             };
 
             if (!excludeProperties)
@@ -628,7 +628,8 @@ namespace Nop.Web.Factories
                 ForumName = forum.Name,
                 ForumTopicSubject = forumTopic.Subject,
                 ForumTopicSeName = _forumService.GetTopicSeName(forumTopic),
-                IsCustomerAllowedToSubscribe = _forumService.IsCustomerAllowedToSubscribe(_workContext.CurrentCustomer)
+                IsCustomerAllowedToSubscribe = _forumService.IsCustomerAllowedToSubscribe(_workContext.CurrentCustomer),
+                DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnForum
             };
 
             if (!excludeProperties)

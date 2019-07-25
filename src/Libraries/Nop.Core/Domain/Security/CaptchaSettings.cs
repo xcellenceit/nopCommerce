@@ -52,13 +52,9 @@ namespace Nop.Core.Domain.Security
         /// </summary>
         public bool ShowOnForgotPasswordPage { get; set; }
         /// <summary>
-        /// A value indicating whether CAPTCHA should be displayed on the "New Topic" page
+        /// A value indicating whether CAPTCHA should be displayed on the Forum
         /// </summary>
-        public bool ShowOnForumNewTopicPage { get; set; }
-        /// <summary>
-        /// A value indicating whether CAPTCHA should be displayed on the "New Post" page
-        /// </summary>
-        public bool ShowOnForumNewPostPage { get; set; }
+        public bool ShowOnForum { get; set; }
         /// <summary>
         /// reCAPTCHA public key
         /// </summary>
